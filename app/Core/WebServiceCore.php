@@ -33,7 +33,7 @@ class WebServiceCore extends Controller
 	{
 		
 		// Make sure that header is always set to JSON
-		header(self::JSON_HEADER);
+		//header(self::JSON_HEADER);
 		
 	}
 	

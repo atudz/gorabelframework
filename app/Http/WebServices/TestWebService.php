@@ -16,7 +16,7 @@ class TestWebService extends WebServiceCore
     public function index()
     {
         //
-        return json_encode(['It Works!']);
+        return response()->json(['It Works!']);
     }
 
     /**
