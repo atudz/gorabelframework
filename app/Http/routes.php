@@ -26,7 +26,10 @@ Route::get('/', 'TestPresenter@index');
  */
 
 // This is only for testing purpose. In actual it should be post
-Route::get('/controller', 'TestController@index');
+Route::group(['prefix' => 'controller'],function(){
+	
+	Route::get('/', 'TestController@index');
+});
 
 
 /*
@@ -35,4 +38,9 @@ Route::get('/controller', 'TestController@index');
  * Avoid using /controller in the first of the url since
  * this is exclusively used by the controllers only.
  */
-Route::get('/service', 'TestWebService@index');
+Route::group(['prefix' => 'service'],function(){
+	
+	Route::get('/', 'TestWebService@index');
+	
+});
+
