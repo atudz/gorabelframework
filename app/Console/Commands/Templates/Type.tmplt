@@ -1,0 +1,16 @@
+<?php
+
+namespace App\Types;
+
+use App\Core\TypeCore;
+/**
+ *  The Type class for {classname}
+ * @author abner
+ *
+ */
+class {classname}Type extends TypeCore
+{
+	/**
+	 * Add functions below
+	 */
+}
