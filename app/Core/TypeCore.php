@@ -10,7 +10,7 @@ namespace App\Core;
  *
  */
 
-class TypeCore
+class TypeCore extends AttributeContainer
 {
 	
 	/**

@@ -4,14 +4,14 @@ namespace App\Types;
 
 use App\Core\TypeCore;
 /**
- *  The Type class for {classname}
+ *  The Type class for User
  * @author abner
  *
  */
-class {classname}Type extends TypeCore
+class UserType extends TypeCore
 {
 	
-	 /**
+	/**
 	 * This constructor will setup the type attributes
 	 */
 	public function __construct()
@@ -20,10 +20,11 @@ class {classname}Type extends TypeCore
 					// Add type attributes below
 					// format attr => datatype
 					// example: 
-					// 'name' => 'string'
+					'name' => 'string'
 				];
 	}
 	
+			
 	/**
 	 * Add functions below
 	 */
