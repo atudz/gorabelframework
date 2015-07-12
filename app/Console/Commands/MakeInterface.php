@@ -24,7 +24,7 @@ class MakeInterface extends Command
     /**
      * The template name
      */
-    protected $templateName = 'Interface.tmplt';
+    protected $templateName = 'Interface.stub';
     
     /**
      * The template merge code
@@ -109,7 +109,7 @@ class MakeInterface extends Command
      */
     public function getTemplateDir()
     {
-    	return __DIR__.'/Templates/';
+    	return __DIR__.'/stubs/';
     }
     
     /**

@@ -25,7 +25,7 @@ class MakeController extends Command
     /**
      * The template name
      */
-    protected $templateName = 'Controller.tmplt';
+    protected $templateName = 'Controller.stub';
     
     /**
      * The template merge code
@@ -111,6 +111,6 @@ class MakeController extends Command
      */
     public function getTemplateDir()
     {
-    	return __DIR__.'/Templates/';
+    	return __DIR__.'/stubs/';
     }
 }

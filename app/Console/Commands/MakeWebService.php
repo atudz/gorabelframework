@@ -25,7 +25,7 @@ class MakeWebService extends Command
     /**
      * The template name
      */
-    protected $templateName = 'WebService.tmplt';
+    protected $templateName = 'WebService.stub';
     
     /**
      * The template merge code
@@ -111,6 +111,6 @@ class MakeWebService extends Command
      */
     public function getTemplateDir()
     {
-    	return __DIR__.'/Templates/';
+    	return __DIR__.'/stubs/';
     }
 }

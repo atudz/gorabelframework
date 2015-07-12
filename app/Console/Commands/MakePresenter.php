@@ -25,7 +25,7 @@ class MakePresenter extends Command
     /**
      * The template name
      */
-    protected $templateName = 'Presenter.tmplt';
+    protected $templateName = 'Presenter.stub';
     
     /**
      * The template merge code
@@ -111,6 +111,6 @@ class MakePresenter extends Command
      */
     public function getTemplateDir()
     {
-    	return __DIR__.'/Templates/';
+    	return __DIR__.'/stubs/';
     }
 }

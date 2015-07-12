@@ -25,7 +25,7 @@ class MakeFactory extends Command
     /**
      * The template name
      */
-    protected $templateName = 'Factory.tmplt';
+    protected $templateName = 'Factory.stub';
     
     /**
      * The template merge code
@@ -110,6 +110,6 @@ class MakeFactory extends Command
      */
     public function getTemplateDir()
     {
-    	return __DIR__.'/Templates/';
+    	return __DIR__.'/stubs/';
     }
 }

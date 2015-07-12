@@ -26,7 +26,7 @@ class MakeType extends Command
     /**
      * The template name
      */
-    protected $templateName = 'Type.tmplt';
+    protected $templateName = 'Type.stub';
     
     /**
      * The template merge code
@@ -111,6 +111,6 @@ class MakeType extends Command
      */
     public function getTemplateDir()
     {
-    	return __DIR__.'/Templates/';
+    	return __DIR__.'/stubs/';
     }
 }
