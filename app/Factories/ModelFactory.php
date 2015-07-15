@@ -5,10 +5,10 @@ namespace App\Factories;
 use App\Core\FactoryCore;
 
 /**
- * Type class's factory
+ * Model class's factory
  */
 
-class TypeFactory extends FactoryCore
+class ModelFactory extends FactoryCore
 {
 
 	/**
@@ -19,23 +19,23 @@ class TypeFactory extends FactoryCore
 	{
 		$args = func_get_args();
 		array_shift($args);
-		return self::createInstance(self::getNamespace().$className.self::getSuffix(),$args);
+		return self::createInstance(self::getNamespace().$className);
 	} 
 	
 	/**
-	 * Get Type Class's namespace root
+	 * Get Model Class's namespace root
 	 */
 	public static function getNamespace()
 	{
-		return 'App\Types'.self::NAMESPACE_SEPARATOR;
+		return 'App\Http\Models'.self::NAMESPACE_SEPARATOR;
 	}
 	
 	/**
-	 * Get Type class name suffix
+	 * Get Model class name suffix
 	 */
 	public static function getSuffix()
 	{
-		return 'Type';
+		return 'Models';
 	}
 	
 }

@@ -17,7 +17,9 @@ class PresenterFactory extends FactoryCore
 	 */
 	public static function getInstance($className)
 	{
-		return self::createInstance(self::getNamespace().$className.self::getSuffix());
+		$args = func_get_args();
+		array_shift($args);
+		return self::createInstance(self::getNamespace().$className.self::getSuffix(),$args);
 	} 
 	
 	/**
