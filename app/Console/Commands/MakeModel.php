@@ -56,6 +56,7 @@ class MakeModel extends Command
         			if(!file_exists($newpath))
         			{
 	        			$contents = file_get_contents($path);
+	        			$contents = str_replace('App', 'App\Http\Models', $contents);
 	      				$contents = str_replace('extends Model', 'extends ModelCore', $contents);
 	      				if(false !== file_put_contents($newpath, $contents))
 	      				{

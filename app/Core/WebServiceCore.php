@@ -33,7 +33,7 @@ class WebServiceCore extends Controller
 	{
 		
 		// Make sure that header is always set to JSON
-		//header(self::JSON_HEADER);
+		header(self::JSON_HEADER);
 		
 	}
 	
@@ -43,6 +43,6 @@ class WebServiceCore extends Controller
 	 */
 	public static function getWebServiceDirectory()
 	{
-		return __DIR__.'/../Http/WebServices/';
+		return app_path('Http/WebServices/');
 	}
 }

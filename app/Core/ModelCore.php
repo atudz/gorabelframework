@@ -17,8 +17,23 @@ class ModelCore extends Model
 {
 	
 	/**
-	 * Add customization to the Laravel's Controller below
+	 * Save the model to the database.
+	 * Overriden the parent so that customization can be added
+	 *
+	 * @param  array  $options
+	 * @return bool
 	 */
+	public function save(array $options = [])
+	{
+		
+		// Auto populate creator 
+		if($this->__isset('creator_pk_id') && !$this->creator_pk_id && \Auth::user())
+		{
+			$this->setAttribute('creator_pk_id', \Auth::user()->id);
+		}
+		
+		return parent::save($options);
+	}
 	
 	
 }

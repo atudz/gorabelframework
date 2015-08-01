@@ -22,7 +22,7 @@ class LibraryCore
 	 */
 	public static function getLibraryDirectory()
 	{
-		return __DIR__.'/../Libraries/';
+		return app_path('Libraries/');
 	}
 
 }

@@ -24,19 +24,26 @@ abstract class FactoryCore
 	/**
 	 * Creates a new instance for the class
 	 */
-	public static function createInstance($className)
+	public static function createInstance($className, $args = [])
 	{
 		
 		$reflection = new \ReflectionClass($className);
-		
-		if($reflection->implementsInterface('App\Interfaces\SingletonInterface')
-			&& isset(self::$singletones[$className]))
+		if($reflection->implementsInterface('App\Interfaces\SingletonInterface'))
 		{
-			return self::$singletones[$className];
+			if(isset(self::$singletones[$className]))
+			{
+				return self::$singletones[$className];
+			}
+			else 
+			{
+				$instance = ($args) ? $reflection->newInstanceArgs($args) :$reflection->newInstance();
+				self::$singletones[$className] = $instance;
+			}
 		}
-		
-		$instance = $reflection->newInstance();
-		self::$singletones[$className] = $instance;
+		else
+		{
+			$instance = ($args) ? $reflection->newInstanceArgs($args) :$reflection->newInstance();
+		}
 		
 		return $instance;
 	}
@@ -47,6 +54,6 @@ abstract class FactoryCore
 	 */
 	public static function getFactoryDirectory()
 	{
-		return __DIR__.'/../Factories/';
+		return app_path('Factories/');
 	}
 }

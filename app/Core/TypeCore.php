@@ -23,7 +23,7 @@ class TypeCore extends AttributeContainer
 	 */
 	public static function getTypeDirectory()
 	{
-		return __DIR__.'/../Types/';
+		return app_path('Types/');
 	}
 	
 }

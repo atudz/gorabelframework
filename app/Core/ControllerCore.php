@@ -24,9 +24,15 @@ class ControllerCore extends Controller
 	 * Returns the Controller Classes directory
 	 * @return string
 	 */
+
+	public function __construct()
+    {
+        $this->middleware('auth', ['except' => 'postLogin']);
+    }
+
 	public static function getControllerDirectory()
 	{
-		return __DIR__.'/../Http/Controllers/';
+		return app_path('Http/Controllers/');
 	}
 	
 }
