@@ -12,8 +12,7 @@ class MakePresenter extends Command
      *
      * @var string
      */
-    protected $signature = 'make:presenter 
-    						{name : The class name}';
+    protected $signature = 'make:presenter {name : The class name} {--folder : Whether to create a folder for the Presenter view}';
 
     /**
      * The console command description.
@@ -61,7 +60,7 @@ class MakePresenter extends Command
     public function handle()
     {
         //
-    	if($classname = $this->argument('name'))
+        if($classname = $this->argument('name'))
     	{
     		$classname = ucfirst($classname);
     		$template = $this->getTemplateDir().$this->templateName;
@@ -81,7 +80,17 @@ class MakePresenter extends Command
 	    				else
 	    				{
 	    					chmod($path,0766);
-	    					$this->info($classname. ' Presenter class created.');
+	    					if($this->option('folder'))
+	    					{
+	    						$paths = config('view.paths');
+	    						$dir = array_shift($paths);
+	    						if(mkdir($dir.'/'.$classname))
+	    							$this->info($classname. ' Presenter class and view folder created.');
+	    						else
+	    							$this->info($classname. ' Presenter class created.');
+	    					}
+	    					else
+	    						$this->info($classname. ' Presenter class created.');	    							    					
 	    				}
     				}
     				else 
@@ -113,4 +122,5 @@ class MakePresenter extends Command
     {
     	return __DIR__.'/stubs/';
     }
+    
 }

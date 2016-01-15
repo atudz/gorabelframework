@@ -46,7 +46,7 @@ class PresenterCore extends Controller
 
 	public function __construct()
     {
-        $this->middleware('auth', ['except' => ['viewLogin','logout']]);
+        $this->middleware('auth', ['except' => ['login','forgotPassword']]);
         $this->view = new \stdClass();
         $this->request = app('request');
     }
@@ -82,11 +82,11 @@ class PresenterCore extends Controller
 			$name = str_replace(PresenterFactory::getSuffix(), '', $name);
 		}
 		
-		$menu = LibraryFactory::getInstance('Menu')->getMyMenus();
-		$this->view->menu = $menu;
+		//$menu = LibraryFactory::getInstance('Menu')->getMyMenus();
+		//$this->view->menu = $menu;
 		$templateName = $name.'.'.$template;
 		
-		return view($templateName,$data, (array)$this->view);
+		return view($templateName, $data, (array)$this->view);
 	}
 	
 	/**

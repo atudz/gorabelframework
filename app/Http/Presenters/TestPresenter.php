@@ -17,7 +17,7 @@ class TestPresenter extends PresenterCore
     public function index()
     {
         //
-    	return "It Works!";
+    	return "Welcome!";
     }
 
     /**

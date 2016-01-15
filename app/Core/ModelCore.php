@@ -36,4 +36,12 @@ class ModelCore extends Model
 	}
 	
 	
+	/**
+	 * Get Model file directory
+	 * @return string
+	 */
+	public static function getModelDirectory()
+	{
+		return app_path('Http/Models/');
+	}
 }

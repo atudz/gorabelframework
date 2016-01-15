@@ -17,6 +17,14 @@
  */
 
 Route::get('/', 'TestPresenter@index');
+Route::group(['after' => 'no-cache'], function()
+{
+	Route::get('/login', ['as' => 'login','uses' => 'AuthPresenter@login']);
+	Route::get('/forgotpass', ['as'=>'forgot-password', 'uses'=>'AuthPresenter@forgotPassword']);
+});
+
+Route::get('/', ['as'=>'dashboard', 'uses'=>'MainPresenter@index']);
+Route::get('/logout', ['as'=>'logout', 'uses'=>'AuthController@logout']);
 
 /*
  * Add routes to Controller below. The URL should contain /controller 
@@ -27,6 +35,9 @@ Route::get('/', 'TestPresenter@index');
 
 // This is only for testing purpose. In actual it should be post
 Route::group(['prefix' => 'controller'],function(){
+	
+	Route::post('/login', ['as'=>'user-login', 'uses'=>'AuthController@authenticate']);
+	Route::post('/resetpass', ['as'=>'password-reset', 'uses'=>'AuthController@resetPassword']);
 	
 	Route::get('/', 'TestController@index');
 });

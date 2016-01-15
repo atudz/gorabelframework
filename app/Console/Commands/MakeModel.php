@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
+use App\Core\ModelCore;
 
 class MakeModel extends Command
 {
@@ -12,8 +13,8 @@ class MakeModel extends Command
      * @var string
      */
     protected $signature = 'make:model-new
-    						{name : The class name}';
-    						//{--migration= : Create a new migration file for the model.}';
+    						{name : The class name}
+    						{--table= : Specify the table name for this model}';
 
     /**
      * The console command description.
@@ -21,7 +22,27 @@ class MakeModel extends Command
      * @var string
      */
     protected $description = 'Create a new model.';
-
+	
+    /**
+     * The template name
+     */
+    protected $templateName = 'Model.stub';
+    
+    /**
+     * The template merge code
+     */
+    protected $mergeCode = '{classname}';
+    
+    /**
+     * The Controller class suffix
+     */
+    protected $suffix = '';
+    
+    /**
+     * The Controller class file extenstion
+     */
+    protected $ext = '.php';
+    
     /**
      * Create a new command instance.
      *
@@ -39,42 +60,54 @@ class MakeModel extends Command
      */
     public function handle()
     {
-        if($name = $this->argument('name'))
+        if($classname = $this->argument('name'))
         {
-        	$argument = ['name' => $name];
-        	/* if($this->argument('migration'))
+        	$classname = ucfirst($classname);
+        	$template = $this->getTemplateDir().$this->templateName;
+        	if(file_exists($template))
         	{
-        		$argument['--migration'] = 'default'; 
-        	} */
-        	$this->callSilent('make:model',$argument);
-        	
-        		$path = __DIR__ . '/../../'.$name.'.php';
-
-        		if(file_exists($path))
+        		if(file_exists(ModelCore::getModelDirectory()))
         		{
-        			$newpath = __DIR__ . '/../../Http/Models/'.$name.'.php';
-        			if(!file_exists($newpath))
+        			$text = str_replace($this->mergeCode, $classname, file_get_contents($template));
+        			$tableDefine = $this->option('table') ? 'protected $table = \''.$this->option('table').'\';': '';
+        			$text = str_replace('{table-define}', $tableDefine, $text);
+        			$path = ModelCore::getModelDirectory().$classname.$this->suffix.$this->ext;
+        				
+        			if(!file_exists($path))
         			{
-	        			$contents = file_get_contents($path);
-	        			$contents = str_replace('App', 'App\Http\Models', $contents);
-	      				$contents = str_replace('extends Model', 'extends ModelCore', $contents);
-	      				if(false !== file_put_contents($newpath, $contents))
-	      				{
-	      					chmod($newpath,0766);
-	      					unlink($path);
-	      					$this->info('Model created successfully.');
-	      				}
+        				if(false == file_put_contents($path,$text))
+        				{
+        					$this->error('Can\'t write file to '. ControllerCore::getControllerDirectory().$path);
+        				}
+        				else
+        				{
+        					chmod($path,0766);
+        					$this->info($classname. ' Model class created.');
+        				}
         			}
-        			else 
+        			else
         			{
-        				$this->error($name . ' already exist.');
+        				$this->error($classname.' already exist');
         			}
         		}
-        	 
-        }
-        else
-        {
-        	$this->error('No classname provided.');
-        }
+        		else
+        		{
+        			$this->error('Model class directory not found '. ControllerCore::getControllerDirectory());
+        		}
+        	}
+        	else
+        	{
+        		$this->error('Model class template not found '. $template);
+        	}
+        }    	
+    }
+    
+    /**
+     * Gets Factory Template directory
+     * @return string
+     */
+    public function getTemplateDir()
+    {
+    	return __DIR__.'/stubs/';
     }
 }
