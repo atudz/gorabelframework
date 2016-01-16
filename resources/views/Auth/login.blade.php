@@ -12,7 +12,7 @@
                             <fieldset>
                             	{!!Form::finput('email','email','','',['no_label'=>true,'placeholder'=>'E-mail'])!!}
                             	{!!Form::finput('password','password','','',['no_label'=>true,'placeholder'=>'Password'])!!}
-                            	{!!Form::fbox('checkbox','remember',['Remember Me'=>'Remember Me'])!!}
+                            	{!!Form::fbox('checkbox','remember',['Remember Me'=>'1'])!!}
 								{!!Form::button('Sign In',['class'=>'btn btn-success','type'=>'submit'])!!}                                
                                 &nbsp;&nbsp;<a href="{{route('forgot-password')}}">Forgot Password?</a>
                             </fieldset>

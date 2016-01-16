@@ -20,7 +20,7 @@ class AuthController extends ControllerCore
 					'email' => 'required|email|max:255', 'password' => 'required|max:255',
 				]);
 		
-		if (\Auth::attempt($request->only(['email','password'])))
+		if (\Auth::attempt($request->only(['email','password'],$request->get('remember'))))
 		{
 			return redirect('/');
 		}

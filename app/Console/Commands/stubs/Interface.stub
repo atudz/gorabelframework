@@ -7,7 +7,7 @@ namespace App\Interfaces;
  * @author abner
  *
  */
-interface {interfacename}
+interface {interfacename}Interface
 {
 	/**
 	 * Add functions below

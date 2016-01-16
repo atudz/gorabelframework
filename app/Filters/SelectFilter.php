@@ -36,22 +36,21 @@ class SelectFilter extends FilterCore
 	 */
 	public function addFilter($model, $name, $scope='')
 	{
-
 		$this->setName($name);
 		$this->value = $this->get();
 		
-		if(!$this->request->has($name) && !$this->getValue())
+		if(!$this->request->has($name) || !$this->request->get($name))
 		{
 			return $model;
 		}
 		elseif($this->request->get($name))
 		{
 			$value = $this->request->get($name);
-			if(!is_array($value))
+			if(!is_array($value) && self::MULTIPLE_SELECT == $this->selectType)
 			{
 				$value = array($value);
 			}
-			
+				
 			$this->setValue($value);
 			$this->store();
 		}
@@ -60,9 +59,18 @@ class SelectFilter extends FilterCore
 		{
 			$name = $model->getTable().'.'.$name;
 		}
+		elseif($model instanceof Builder)
+		{
+			$name = $model->from.'.'.$name;
+		}
 		else
 		{
 			$name = $model->getModel()->getTable().'.'.$name;
+		}
+		
+		if($scope instanceof \Closure)
+		{
+			return $scope($this,$model);
 		}
 		
 		return $scope ? $this->$scope($model) : $model->where($name,'=',$this->getValue());

@@ -6,11 +6,11 @@ use App\Core\TypeCore;
 use App\Interfaces\TypeableInterface as Typeable;
 use Illuminate\Http\Request;
 /**
- *  The Type class for {classname}
+ *  The Type class for User
  * @author abner
  *
  */
-class {classname}Type extends TypeCore implements Typeable
+class UserType extends TypeCore implements Typeable
 {
 	/**
 	 * Saves the related type data to database

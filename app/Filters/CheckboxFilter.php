@@ -27,7 +27,7 @@ class CheckboxFilter extends FilterCore
 			$this->value = 0;
 			$this->store();
 		}
-		elseif($this->request->has($name) && $this->request->has('submit')) 
+		elseif($this->request->has($name)) 
 		{
 			$this->setValue($this->request->get($name));
 			$this->store();
@@ -37,19 +37,21 @@ class CheckboxFilter extends FilterCore
 		{
 			$name = $model->getTable().'.'.$name;
 		}
+		elseif($model instanceof \Illuminate\Database\Query\Builder)
+		{
+			$name = $model->from.'.'.$name;
+		}
 		else
 		{
 			$name = $model->getModel()->getTable().'.'.$name;
 		}
 		
-		if($scope)
+		if($scope instanceof \Closure)
 		{
-			return $model->$scope($this->getValue());
+			return $scope($this,$model);
 		}
-		else
-		{
-			return $model->where($name,'=',$this->getValue());
-		}
+		
+		return $scope ? $this->$scope($model) : $model->where($name,'=',$this->getValue());		
 	}
 	
 	/**
