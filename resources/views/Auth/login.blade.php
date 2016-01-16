@@ -8,16 +8,15 @@
                         <h3 class="panel-title">Please Sign In</h3>
                     </div>
                     <div class="panel-body">
-                        <form role="form">
+                        {!!Form::fopen(['url'=>route('user-login')])!!}
                             <fieldset>
-                            	{!!Form::finput('email','email','',['no_label'=>true,'placeholder'=>'E-mail'])!!}
-                            	{!!Form::finput('password','password','',['no_label'=>true,'placeholder'=>'Password'])!!}
+                            	{!!Form::finput('email','email','','',['no_label'=>true,'placeholder'=>'E-mail'])!!}
+                            	{!!Form::finput('password','password','','',['no_label'=>true,'placeholder'=>'Password'])!!}
                             	{!!Form::fbox('checkbox','remember',['Remember Me'=>'Remember Me'])!!}
-                                <!-- Change this to a button or input when using this as a form -->
-                                <button class="btn btn-success">Sign In</button>
+								{!!Form::button('Sign In',['class'=>'btn btn-success','type'=>'submit'])!!}                                
                                 &nbsp;&nbsp;<a href="{{route('forgot-password')}}">Forgot Password?</a>
                             </fieldset>
-                        </form>
+                        {!!Form::close()!!}
                     </div>
                 </div>
             </div>

@@ -16,7 +16,6 @@
  * at the first url because this is reserved for controllers and webservices
  */
 
-Route::get('/', 'TestPresenter@index');
 Route::group(['after' => 'no-cache'], function()
 {
 	Route::get('/login', ['as' => 'login','uses' => 'AuthPresenter@login']);
@@ -38,8 +37,7 @@ Route::group(['prefix' => 'controller'],function(){
 	
 	Route::post('/login', ['as'=>'user-login', 'uses'=>'AuthController@authenticate']);
 	Route::post('/resetpass', ['as'=>'password-reset', 'uses'=>'AuthController@resetPassword']);
-	
-	Route::get('/', 'TestController@index');
+
 });
 
 

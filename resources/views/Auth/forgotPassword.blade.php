@@ -8,18 +8,18 @@
                         <h3 class="panel-title">Forgot Password</h3>
                     </div>
                     <div class="panel-body">
-                        <form role="form">
+                        {!!Form::fopen(['url'=>route('password-reset')])!!}
                             <fieldset>
-                            	{!!Form::finput('email','email','',['no_label'=>true,'placeholder'=>'E-mail'])!!}
+                            	{!!Form::finput('email','email','','',['no_label'=>true,'placeholder'=>'E-mail'])!!}
                             	<div class="pull-right">
-                            		<button class="btn btn-success">Reset Password</button>
+                            		{!!Form::button('Reset Password',['class'=>'btn btn-success','type'=>'submit'])!!}
                             	</div>
                             	<div class="pull-left">
                             		&nbsp;&nbsp;<a href="{{route('login')}}">Go&nbsp;Back</a>
                             	</div>                                
                                 
                             </fieldset>
-                        </form>
+                        {!!Form::close()!!}
                     </div>
                 </div>
             </div>

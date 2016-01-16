@@ -5,10 +5,11 @@
  * @param $type The input type attribute
  * @param $name The input name attribute
  * @param $label The form input label
+ * @param $value The input value attribute
  * @param $attributes The input additional attributes
  */
 
-Form::macro('finput', function($type, $name, $label, $attributes=[]) {
+Form::macro('finput', function($type, $name, $label, $value=null, $attributes=[]) {
 	
 	$options = [
 			'class' => 'form-control',
@@ -27,7 +28,7 @@ Form::macro('finput', function($type, $name, $label, $attributes=[]) {
 	
 	$html = '<div class="form-group">
 			 	<label for="'.$name.'" class="'.$labelClass.'">'.$label.'</label>'.
-			 	Form::input($type, $name, null, $options) .
+			 	Form::input($type, $name, $value, $options) .
 			 	'
 			 </div>';
 

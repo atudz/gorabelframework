@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Core\ControllerCore;
+use Illuminate\Http\Request;
+use App\Factories\ModelFactory;
 
 class AuthController extends ControllerCore
 {
@@ -36,11 +38,12 @@ class AuthController extends ControllerCore
 	 */
 	public function resetPassword(Request $request)
 	{
+		$this->validate($request, ['email' => 'required|max:255']);
+		
 		$user = ModelFactory::getInstance('User')
 					->where('email','=',$request->get('email'))
 					->first();
-	
-		$this->validate($request, ['email' => 'required|max:255']);
+			
 		if(!$user)
 		{
 			return redirect('/forgotpass')
