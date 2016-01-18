@@ -100,7 +100,7 @@ class PresenterCore extends Controller
 		$pageName = 'page';
 		$sortColumn = '';
 		$sortOrder = '';
-		$default = config('storage_directory.pagination_limit');
+		$default = config('system.page_limit');
 		$total = $criteria->getQuery()->getCountForPagination();
 		if(!is_null($this->request) && $this->request->has('limit'))
 		{
