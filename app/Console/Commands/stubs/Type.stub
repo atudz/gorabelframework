@@ -12,6 +12,14 @@ use Illuminate\Http\Request;
  */
 class {classname}Type extends TypeCore implements Typeable
 {
+	
+	public function __construct()
+	{
+		$this->attributes = [
+			//define the attributes here				
+		];
+	}
+	
 	/**
 	 * Saves the related type data to database
 	 */
