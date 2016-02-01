@@ -137,6 +137,17 @@ return [
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
     		
+    		
+    	//Custom Providers
+    	App\Providers\ModelServiceProvider::class,
+    	App\Providers\ControllerServiceProvider::class,
+    	App\Providers\FilterServiceProvider::class,
+    	App\Providers\LibraryServiceProvider::class,
+    	App\Providers\PresenterServiceProvider::class,
+    	App\Providers\TypeServiceProvider::class,
+    	App\Providers\WebServiceServiceProvider::class,
+    		
+    		
     	//Third Party
     	Collective\Html\HtmlServiceProvider::class,
     	App\Providers\MacroServiceProvider::class,
@@ -195,6 +206,15 @@ return [
         'URL'       => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View'      => Illuminate\Support\Facades\View::class,
+    		
+    	//Custom Providers
+    	'Controller'      => App\Facades\ControllerFacade::class,
+    	'Filter'      => App\Facades\FilterFacade::class,
+    	'Library'      => App\Facades\LibraryFacade::class,
+    	'Model'      => App\Facades\ModelFacade::class,
+    	'Presenter'      => App\Facades\PresenterFacade::class,
+    	'Type'      => App\Facades\TypeFacade::class,
+    	'WebService'      => App\Facades\WebServiceFacade::class,
     		
     	//Third Party
     	'Form' => Collective\Html\FormFacade::class,
