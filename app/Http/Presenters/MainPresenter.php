@@ -55,7 +55,7 @@ class MainPresenter extends PresenterCore
     	
     	// Perform an access check
     	\AccessCheck::getInstance('User')->canAccess(1,'view');
-    	
+    
     	return $this->view('dashboard');
     }
 }
