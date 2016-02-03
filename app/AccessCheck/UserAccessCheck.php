@@ -2,10 +2,10 @@
 
 namespace App\AccessCheck;
 
-use App\Types\AccessCheckType;
 use App\Factories\ModelFactory;
+use App\Core\AccessCheckCore;
 
-class UserAccessCheck extends AccessCheckType
+class UserAccessCheck extends AccessCheckCore
 {
 	
 	public function __construct()

@@ -1,8 +1,7 @@
 <?php
 
-namespace App\Types;
+namespace App\Core;
 
-use App\Core\TypeCore as Type;
 use App\Interfaces\SingletonInterface;
 
 
@@ -12,7 +11,7 @@ use App\Interfaces\SingletonInterface;
  *
  */
 
-abstract class AccessCheckType extends Type implements SingletonInterface 
+abstract class AccessCheckCore implements SingletonInterface 
 {
 	
 	/**
