@@ -146,6 +146,7 @@ return [
     	App\Providers\PresenterServiceProvider::class,
     	App\Providers\TypeServiceProvider::class,
     	App\Providers\WebServiceServiceProvider::class,
+    	App\Providers\AccessCheckServiceProvider::class,
     		
     		
     	//Third Party
@@ -215,6 +216,7 @@ return [
     	'Presenter'      => App\Facades\PresenterFacade::class,
     	'Type'      => App\Facades\TypeFacade::class,
     	'WebService'      => App\Facades\WebServiceFacade::class,
+    	'AccessCheck'      => App\Facades\AccessCheckFacade::class,
     		
     	//Third Party
     	'Form' => Collective\Html\FormFacade::class,
