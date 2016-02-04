@@ -152,4 +152,13 @@ abstract class AccessCheckCore implements SingletonInterface
 			throw new \ErrorException();
 		}
 	}
+	
+	/**
+	 * Get controller files directory
+	 * @return string
+	 */
+	public static function getAccessCheckDirectory()
+	{
+		return app_path('AccessChecks/');
+	}
 }
