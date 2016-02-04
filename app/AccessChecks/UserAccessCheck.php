@@ -1,6 +1,6 @@
 <?php
 
-namespace App\AccessCheck;
+namespace App\AccessChecks;
 
 use App\Factories\ModelFactory;
 use App\Core\AccessCheckCore;

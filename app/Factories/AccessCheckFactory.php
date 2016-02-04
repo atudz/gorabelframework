@@ -27,7 +27,7 @@ class AccessCheckFactory extends FactoryCore
 	 */
 	public static function getNamespace()
 	{
-		return 'App\AccessCheck'.self::NAMESPACE_SEPARATOR;
+		return 'App\AccessChecks'.self::NAMESPACE_SEPARATOR;
 	}
 	
 	/**
