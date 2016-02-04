@@ -7,6 +7,7 @@ use App\Factories\ModelFactory;
 use App\Factories\LibraryFactory;
 use App\Factories\FilterFactory;
 use App\Factories\TypeFactory;
+use App\Factories\AccessCheckFactory;
 
 class MainPresenter extends PresenterCore
 {
@@ -17,7 +18,7 @@ class MainPresenter extends PresenterCore
      */
     public function index()
     {
-    	// Getting Data using factory
+    	// Using factory
     	
         // Getting an instance of a model User example
         $user = ModelFactory::getInstance('User');
@@ -31,8 +32,11 @@ class MainPresenter extends PresenterCore
         // Getting an instance of a Type User
         $userType = TypeFactory::getInstance('User');
         
+        // Perform an access check
+        AccessCheckFactory::getInstance('Booking')->canAccess(1,'view');
         
-        // Getting Data using facade
+        
+        // Using facade
          
         // Getting an instance of a model User example
         $user = \Model::getInstance('User');
@@ -49,6 +53,9 @@ class MainPresenter extends PresenterCore
     	// Passing data to view example
     	$this->view->fullname = auth()->user()->firstname . ' ' . auth()->user()->lastname;
     	
+    	// Perform an access check
+    	\AccessCheck::getInstance('User')->canAccess(1,'view');
+    
     	return $this->view('dashboard');
     }
 }
