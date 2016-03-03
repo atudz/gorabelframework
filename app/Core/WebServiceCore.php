@@ -120,6 +120,16 @@ class WebServiceCore extends Controller
 	const SERVICE_ERROR_LOG = 'webservice-error.log';
 		
 	/**
+	 * Page permissions
+	 * @var unknown $permissions
+	 */
+	protected $permissions = [
+			// List all class methods here and its specific role/group that should have access
+			// ex. 'index' => 'role_admin'
+			'*' => []
+	];
+	
+	/**
 	 * The class constructor
 	 */
 	public function __construct()

@@ -19,15 +19,26 @@ class ControllerCore extends Controller
 	/**
 	 * Add customization below
 	 */
+	protected $external;
 	
 	/**
 	 * Returns the Controller Classes directory
 	 * @return string
 	 */
+	protected $permissions = [
+			// List all class methods here and its specific role/group that should have access
+			// ex. 'index' => 'role_admin'
+			'*' => []
+	];
 
 	public function __construct()
     {
-       $this->middleware('auth', ['except' => ['authenticate','resetPassword','logout']]);
+		if(!$this->external)
+		{
+       		$this->middleware('auth', ['except' => ['authenticate','resetPassword','logout']]);
+       		$this->middleware('page.access', ['except' => ['authenticate','resetPassword','logout']]);
+		}
+       
     }
 
     /**

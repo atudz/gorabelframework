@@ -20,7 +20,7 @@ Form::macro('fselect', function($name, $label, $list = [], $selected=null, $defa
 	if($default)
 	{
 		if(is_array($list))
-			$list = array_merge([''=>$default],$list);
+			$list = [''=>$default]+$list;
 		elseif($list instanceof Collection) 
 			$list = $list->prepend($default,'');
 	}

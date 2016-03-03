@@ -69,11 +69,10 @@ class CaptchaLibrary extends LibraryCore implements SingletonInterface
 	/**
 	 * Validate captcha hash
 	 * @param unknown $captcha
-	 * @param unknown $captcha_hash
 	 */
-	public function validate($captcha, $captcha_hash)
+	public function validate($captcha)
 	{
-		return \Hash::check($captcha, $captcha_hash);
+		return \Hash::check($captcha, session('captchaHash'));
 	}
 }
 

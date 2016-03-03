@@ -33,7 +33,7 @@ class MainPresenter extends PresenterCore
         $userType = TypeFactory::getInstance('User');
         
         // Perform an access check
-        AccessCheckFactory::getInstance('Booking')->canAccess(1,'view');
+        AccessCheckFactory::getInstance('User')->canAccess(1,'view');
         
         
         // Using facade
@@ -51,7 +51,7 @@ class MainPresenter extends PresenterCore
         $userType = \Type::getInstance('User');
         
     	// Passing data to view example
-    	$this->view->fullname = auth()->user()->firstname . ' ' . auth()->user()->lastname;
+    	$this->view->fullname = auth()->user()->fullname;
     	
     	// Perform an access check
     	\AccessCheck::getInstance('User')->canAccess(1,'view');

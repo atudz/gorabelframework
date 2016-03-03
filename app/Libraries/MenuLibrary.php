@@ -5,6 +5,9 @@ namespace App\Libraries;
 use App\Interfaces\SingletonInterface;
 use App\Core\LibraryCore;
 use App\Factories\ModelFactory;
+use Cartalyst\Support\Collection;
+use App\Facades\LibraryFacade;
+use App\Factories\LibraryFactory;
 
 /**
  * This is a library class for Menu
@@ -67,23 +70,152 @@ class MenuLibrary extends LibraryCore implements SingletonInterface
 	 */
 	protected function prepare()
 	{
-		if(app('session')->has('menu_list'))
+		$userId = auth()->user() ? auth()->user()->id : 0;
+		if(!$userId)
 		{
-			$this->menuList = app('session')->pull('menu_list');
+			$this->menuList = [];
+			return;
 		}
-		elseif(\Auth::user())
+		
+		$user = ModelFactory::getInstance('User')
+						->with(['roles'=>function($query){
+									$query->select(['role.id']);
+								},
+								'roles.navigations'=>function($query){
+									$query->select(['navigation.id']);
+								}])
+						->find($userId,['id']);
+								
+		$navIds = [];
+		foreach($user->roles as $role)
 		{
-			$userId = \Auth::user()->id;
-			$userModel = ModelFactory::getInstance('User');
-			$user = $userModel->with('group.navigations.navitems')->find($userId);
-			$this->menuList = $user->group->navigations->toArray();
-			// store this to session so that we'll just pull the data from session
-			// and no longer need to Query again
-			app('session')->put('menu_list', $this->menuList); 
+			foreach($role->navigations as $nav)
+			{
+				$navIds[] = $nav->id;
+			}				
 		}
+			
+		$nav = ModelFactory::getInstance('Navigation');
+		$treeLib = LibraryFactory::getInstance('DataTree',$nav,'parent_id');
+		$treeLib->addSort('order');
+		$treeLib->addwhereIn('id', $navIds);
+		$navs = $treeLib->getData();
+		$this->menuList = $navs;
 		
 		$this->prepared = true;
 	}
+	
+	
+	/**
+	 * Check for a specific user if has this menu
+	 * @param unknown $userId
+	 * @param unknown $navId
+	 */
+	public function userHasMenu($userId, $navId)
+	{
+		return ModelFactory::getInstance('UserToNav')
+					->where('user_id','=',$userId)
+					->where('nav_id','=',$navId)
+					->exists();
+	}
+	
+	/**
+	 * Check for a specific role if has this menu
+	 * @param unknown $roleId
+	 * @param unknown $navId
+	 */
+	public function roleHasMenu($roleId, $navId)
+	{
+		return ModelFactory::getInstance('RoleToNav')
+					->where('role_id','=',$roleId)
+					->where('navigation_id','=',$navId)
+					->exists();
+	}
+	
+	/**
+	 * Check if user has Access
+	 * @param unknown $userId
+	 * @param unknown $navId
+	 */
+	public function userHasAcces($userId, $navId)
+	{
+		$userRole = ModelFactory::getInstance('UserToNav')
+						->where('user_id','=',$userId)
+						->where('nav_id','=',$navId)
+						->first();
+		
+		return !$userRole ? false : $userRole->enable;
+	}
+	
+	/**
+	 * Role Has Access
+	 * @param unknown $userId
+	 * @param unknown $navId
+	 */
+	public function roleHasAcces($userId, $navId)
+	{
+		$userRole = ModelFactory::getInstance('RoleToNav')
+						->where('user_id','=',$userId)
+						->where('nav_id','=',$navId)
+						->first();
+	
+		return !$userRole ? false : $userRole->enable;
+	}
+	
+	/**
+	 * Remove nav from role
+	 * @param unknown $roleId
+	 * @param unknown $navId
+	 */
+	public function removeNavFromRole($roleId, $navId)
+	{
+		return ModelFactory::getInstance('RoleToNav')
+					->where('role_id','=',$roleId)
+					->where('navigation_id','=',$navId)
+					->delete();
+	}
+	
+	
+	/**
+	 * Add nav from role
+	 * @param unknown $roleId
+	 * @param unknown $navId
+	 */
+	public function addNavFromRole($roleId, $navId)
+	{
+		$navToRole = ModelFactory::getInstance('RoleToNav');
+		$navToRole->role_id = $roleId;
+		$navToRole->navigation_id = $navId;
+		return $navToRole->save();
+	}
 
+	/**
+	 * Get protected menus
+	 * Meaning this are the menus that can't be removed from the user
+	 */
+	public function getProtectedMenus()
+	{
+		return ModelFactory::getInstance('Navigation')->protected()->get();
+	}
+	
+	
+	/**
+	 * Remove all the navs belong to this role
+	 * @param unknown $roleId
+	 */
+	public function removeAllNavsFromRole($roleId,$protected=true)
+	{
+		$excepIds = $this->getProtectedMenus()->lists('id');
+		$roleNavs = ModelFactory::getInstance('RoleToNav')
+					->where('role_id','=',$roleId)					
+					->get();
+		foreach($roleNavs as $nav)
+		{
+			if(in_array($nav->navigation_id,$excepIds->toArray()) && $protected)
+				continue;
+			
+			$nav->delete();					
+		}
+	}
 }
 

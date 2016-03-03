@@ -12,16 +12,19 @@ class UserTable extends Migration
      */
     public function up()
     {
-        Schema::create('users', function(Blueprint $table) {
+        Schema::create('user', function(Blueprint $table) {
 			$table->increments('id');
 			$table->timestamps();
-			$table->string('firstname', 255);
-			$table->string('lastname', 255);
-			$table->string('middlename', 255)->nullable();
+			$table->string('fullname', 255);
 			$table->string('password', 255);
-			$table->string('email', 255)->unique()->nullable();
+			$table->string('username', 255)->nullable();
+			$table->string('email', 255)->unique();			
+			$table->string('hash_key', 255)->nullable();
+			$table->dateTime('date_activated')->nullable();		
+			$table->unsignedTinyInteger('activated')->default(1);
+			$table->unsignedInteger('creator_id')->index()->default(0);
 			$table->rememberToken();
-			$table->softDeletes();			
+			$table->softDeletes();	
 		}); 
     }
 
@@ -32,6 +35,6 @@ class UserTable extends Migration
      */
     public function down()
     {
-        Schema::drop('users');
+        Schema::drop('user');
     }
 }

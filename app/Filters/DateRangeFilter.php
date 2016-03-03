@@ -11,7 +11,7 @@ class DateRangeFilter extends FilterCore
 	 * (non-PHPdoc)
 	 * @see \App\Core\FilterCore::addFilter()
 	 */
-	public function addFilter($model, $name, $scope='')
+	public function addFilter($model, $name, $scope='', $alias='')
 	{
 
 		$this->setName($name);
@@ -23,17 +23,22 @@ class DateRangeFilter extends FilterCore
 		}
 		elseif($this->request->get($name.'_from'))
 		{
-			$to = $this->request->get($name.'_to');
+			$to = $this->request->get($name.'_to') ? (new \Carbon($this->request->get($name.'_to')))->format('Y-m-d') : (new \Carbon('9999-12-31'))->format('Y-m-d') ;
+			$from = (new \Carbon($this->request->get($name.'_from')))->format('Y-m-d');
 			$value = [
-					'from' => $this->request->get($name.'_from'),
-					'to' => $to ? $to : '9999-12-31'
+					'from' => $from,
+					'to' => $to
 			];
 
 			$this->setValue($value);
 			//$this->store();
 		}
 
-		if($model instanceof Model)
+		if($alias)
+		{
+			$name = $alias.'.'.$name;
+		}
+		elseif($model instanceof Model)
 		{
 			$name = $model->getTable().'.'.$name;
 		}

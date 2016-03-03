@@ -17,7 +17,7 @@ class CheckboxFilter extends FilterCore
 	 * (non-PHPdoc)
 	 * @see \App\Core\FilterCore::addFilter()
 	 */
-	public function addFilter($model, $name, $scope='')
+	public function addFilter($model, $name, $scope='', $alias='')
 	{
 		$this->setName($name);
 		$this->value = $this->get();
@@ -30,10 +30,14 @@ class CheckboxFilter extends FilterCore
 		elseif($this->request->has($name)) 
 		{
 			$this->setValue($this->request->get($name));
-			$this->store();
+			//$this->store();
 		}
 	
-		if($model instanceof Model)
+		if($alias)
+		{
+			$name = $alias.'.'.$name;
+		}
+		elseif($model instanceof Model)
 		{
 			$name = $model->getTable().'.'.$name;
 		}

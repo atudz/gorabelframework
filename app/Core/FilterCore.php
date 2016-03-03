@@ -42,6 +42,12 @@ abstract class FilterCore implements FilterableInterface
 	protected $request;
 	
 	/**
+	 * Add table alias
+	 * @var unknown $tableAlias
+	 */
+	protected $tableAlias = '';
+	
+	/**
 	 * The session
 	 * @var unknown
 	 */
@@ -64,6 +70,23 @@ abstract class FilterCore implements FilterableInterface
 		}
 		
 		$this->clear();
+	}
+	
+	/**
+	 * Set table alias
+	 * @param unknown $alias
+	 */
+	public function setTableAlias($alias)
+	{
+		$this->tableAlias = $alias;
+	}
+	
+	/**
+	 * Get Table alias
+	 */
+	public function getTableAlias()
+	{
+		return $this->tableAlias;	
 	}
 	
 	/**
@@ -187,7 +210,7 @@ abstract class FilterCore implements FilterableInterface
 	 * (non-PHPdoc)
 	 * @see \App\Interfaces\FilterableInterface::addFilter()
 	 */
-	abstract public function addFilter($model, $name, $scope='');
+	abstract public function addFilter($model, $name, $scope='',$alias='');
 	
 	
 	/**

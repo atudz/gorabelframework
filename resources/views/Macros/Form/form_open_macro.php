@@ -14,7 +14,8 @@ Form::macro('fopen', function($options=[],$showErrorDiv=true) {
 		$errors = request()->session()->get('errors');
 		if($errors)
 		{
-			$html .= '<div class="alert alert-danger">
+			$html .= '<div class="wrapped-error">
+						<div class="alert alert-danger" id="error_scroll">
 						<ul>';
 			foreach($errors->default->getMessages() as $error)
 			{
@@ -24,6 +25,7 @@ Form::macro('fopen', function($options=[],$showErrorDiv=true) {
 					$html .= '<li>'.$error.'</li>';
 			}
 			$html .= '  </ul>
+					  	</div>
 					  </div>';
 		}		
 	}

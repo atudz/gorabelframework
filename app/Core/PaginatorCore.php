@@ -30,6 +30,27 @@ class PaginatorCore extends LengthAwarePaginator
 	
 	
 	/**
+	 * Create a new paginator instance.
+	 *
+	 * @param  mixed  $items
+	 * @param  int  $total
+	 * @param  int  $perPage
+	 * @param  int|null  $currentPage
+	 * @param  array  $options (path, query, fragment, pageName)
+	 * @return void
+	 */
+	public function __construct($items, $total, $perPage, $currentPage = null, array $options = [])
+	{
+		parent::__construct($items, $total, $perPage, $currentPage, $options);
+	
+		foreach(request()->query->all() as $key=>$param)
+		{
+			$this->addQuery($key, $param);
+		}
+	}
+	
+	
+	/**
 	 * Render the paginator using the given presenter.
 	 *
 	 * @param  \Illuminate\Contracts\Pagination\Presenter|null  $presenter

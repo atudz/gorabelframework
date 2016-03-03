@@ -12,7 +12,7 @@ class DateFilter extends FilterCore
 	 * (non-PHPdoc)
 	 * @see \App\Core\FilterCore::addFilter()
 	 */
-	public function addFilter($model, $name, $scope='')
+	public function addFilter($model, $name, $scope='', $alias='')
 	{
 
 		$this->setName($name);
@@ -25,10 +25,14 @@ class DateFilter extends FilterCore
 		elseif($value = $this->request->get($name))
 		{			
 			$this->setValue($value);
-			$this->store();
+			//$this->store();
 		}
 		
-		if($model instanceof Model)
+		if($alias)
+		{
+			$name = $alias;
+		}
+		elseif($model instanceof Model)
 		{
 			$name = $model->getTable().'.'.$name;
 		}

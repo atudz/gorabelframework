@@ -13,22 +13,26 @@ class TextFilter extends FilterCore
 	 * (non-PHPdoc)
 	 * @see \App\Core\FilterCore::addFilter()
 	 */
-	public function addFilter($model, $name, $scope='')
+	public function addFilter($model, $name, $scope='',$alias='')
 	{
 		$this->setName($name);
 		$this->value = $this->get();
 		
-		if(!$this->request->has($name) && !$this->getValue())
+		if(!strlen($this->request->get($name)) && !$this->getValue())
 		{
 			return $model;
 		}
-		elseif($this->request->get($name))
+		elseif(strlen($this->request->get($name)))
 		{
 			$this->setValue($this->request->get($name));
-			$this->store();
+		//	$this->store();
 		}
 		
-		if($model instanceof Model)
+		if($alias)
+		{
+			$name = $alias;
+		}
+		elseif($model instanceof Model)
 		{
 			$name = $model->getTable().'.'.$name;
 		}
@@ -46,7 +50,7 @@ class TextFilter extends FilterCore
 			return $scope($this,$model);	
 		}
 		
-		return $scope ? $this->$scope($model) : $model->where($name,'=',$this->getValue());
+		return $scope ? $this->$scope($model) : $model->where($name,'LIKE','%'.$this->getValue().'%');
 	}
 	
 	/**

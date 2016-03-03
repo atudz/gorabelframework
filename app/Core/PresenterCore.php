@@ -40,13 +40,33 @@ class PresenterCore extends Controller
 	protected $view;
 		
 	/**
+	 * Flags if the Presenter/Controller to bypass middleware
+	 * @var unknown $external
+	 */
+	protected $external = false;
+	
+	/**
+	 * Page permissions
+	 * @var unknown $permissions
+	 */
+	protected $permissions = [
+			// List all class methods here and its specific role/group that should have access
+			// ex. 'index' => 'role_admin'
+			'*' => []
+	];
+	
+	/**
 	 * Returns the Presenter Classes directory
 	 * @return string
 	 */
 
 	public function __construct()
     {
-        $this->middleware('auth', ['except' => ['login','forgotPassword']]);
+		if(!$this->external)
+		{
+        	$this->middleware('auth', ['except' => ['login','forgotPassword']]);
+        	$this->middleware('page.access', ['except' => ['login','forgotPassword']]);
+		}
         $this->view = new \stdClass();
         $this->request = app('request');
     }
@@ -82,8 +102,8 @@ class PresenterCore extends Controller
 			$name = str_replace(PresenterFactory::getSuffix(), '', $name);
 		}
 		
-		//$menu = LibraryFactory::getInstance('Menu')->getMyMenus();
-		//$this->view->menu = $menu;
+		$menu = LibraryFactory::getInstance('Menu')->getMyMenus();
+		$this->view->menu = $menu;
 		$templateName = $name.'.'.$template;
 		
 		return view($templateName, $data, (array)$this->view);
@@ -130,5 +150,21 @@ class PresenterCore extends Controller
 				'sortColumn' => $sortColumn,
 				'sortOrder' => $sortOrder,
 		]);
+	}
+	
+	/**
+	 * Get permission list
+	 */
+	public function getPermissions()
+	{
+		return $this->permissions;
+	}
+	
+	/**
+	 * Get external attribute
+	 */
+	public function external()
+	{
+		return $this->external;
 	}
 }

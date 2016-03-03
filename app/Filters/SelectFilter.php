@@ -24,9 +24,9 @@ class SelectFilter extends FilterCore
 	 */
 	protected $selectType = self::SINGLE_SELECT;
 	
-	public function __construct($label,$type)
+	public function __construct($label,$type='')
 	{
-		$this->selectType = $type;
+		$this->selectType = $type ? $type : self::SINGLE_SELECT;
 		parent::__construct($label);	
 	}
 	
@@ -34,12 +34,12 @@ class SelectFilter extends FilterCore
 	 * (non-PHPdoc)
 	 * @see \App\Core\FilterCore::addFilter()
 	 */
-	public function addFilter($model, $name, $scope='')
+	public function addFilter($model, $name, $scope='',$alias='')
 	{
 		$this->setName($name);
 		$this->value = $this->get();
 		
-		if(!$this->request->has($name) || !$this->request->get($name))
+		if(!$this->request->has($name) && !$this->getValue())
 		{
 			return $model;
 		}
@@ -52,10 +52,14 @@ class SelectFilter extends FilterCore
 			}
 				
 			$this->setValue($value);
-			$this->store();
+		//	$this->store();
 		}
 		
-		if($model instanceof Model)
+		if($alias)
+		{
+			$name = $alias;
+		}
+		elseif($model instanceof Model)
 		{
 			$name = $model->getTable().'.'.$name;
 		}
@@ -72,8 +76,14 @@ class SelectFilter extends FilterCore
 		{
 			return $scope($this,$model);
 		}
-		
-		return $scope ? $this->$scope($model) : $model->where($name,'=',$this->getValue());
+
+		if($this->selectType == self::SINGLE_SELECT)
+		{
+			
+			return $scope ? $this->$scope($model) : $model->where($name,'=',$this->getValue());
+		}
+		else
+			return $scope ? $this->$scope($model) : $model->whereIn($name,$this->getValue());
 	}
 	
 	/**
@@ -102,44 +112,4 @@ class SelectFilter extends FilterCore
 	{
 		$this->selectType = $type;
 	}	
-	
-	/**
-	 * Query scope for filtering data by category Ids
-	 * @param unknown $model
-	 * @param string $values
-	 */
-	public function byCategory($model, $values='')
-	{
-		if(!$values)
-		{
-			$values = $this->getValue();
-		}
-	
-		$table = ($model instanceof Model) ? $model->getTable() : $model->getModel()->getTable();
-		
-		return $model->join('product_to_category',function($join) use ($table, $values) {
-			$join->on($table.'.id','=','product_to_category.product_pk_id');
-			$join->whereIn('product_to_category.product_category_pk_id',$values);
-		});
-	}
-	
-	/**
-	 * Query scope for filtering data by category Ids
-	 * @param unknown $model
-	 * @param string $values
-	 */
-	public function byTag($model, $values='')
-	{
-		if(!$values)
-		{
-			$values = $this->getValue();
-		}
-	
-		$table = ($model instanceof Model) ? $model->getTable() : $model->getModel()->getTable();
-	
-		return $model->join('product_to_tag',function($join) use ($table, $values) {
-			$join->on($table.'.id','=','product_to_tag.product_pk_id');
-			$join->whereIn('product_to_tag.product_tag_pk_id',$values);
-		});
-	}
 }

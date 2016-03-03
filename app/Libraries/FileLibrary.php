@@ -5,7 +5,6 @@ namespace App\Libraries;
 use App\Core\LibraryCore;
 use App\Core\ModelCore;
 use Illuminate\Http\Request;
-use App\Types\GiftCardType;
 
 /**
  * This is a library class for File
@@ -22,18 +21,7 @@ class FileLibrary extends LibraryCore
 	 * 
 	 */
 	protected $configKeys = [
-			'user_photo',
-			'gift_card_photo',	
-			'gift_card_video',
-			'gift_card_category_images',
-			'message_audio',
-			'message_video',
-			'qrcodes',
-			'product_photo',
-			'product_thumbnails',
-			'icons',
-			'printing_orders',
-			'notifications',
+			'car_images',
 		];
 	
 	/**
@@ -46,18 +34,6 @@ class FileLibrary extends LibraryCore
 			'image/gif'=> 'img',
 			'image/png'=> 'img',
 			'image/jpeg'=> 'img',
-			// audio
-			'audio/aac' => 'aud',
-			'audio/mp4'=> 'aud',
-			'audio/mpeg'=> 'aud',
-			'audio/ogg'=> 'aud',
-			'audio/wav'=> 'aud',
-			'audio/webm'=> 'aud',
-			// video
-			'video/mp4' => 'vid',
-			'video/ogg'=> 'vid',
-			'video/webm'=> 'vid',
-			'image/jpeg'=> 'vid',
 	];
 	/**
 	 * The subject model
@@ -146,7 +122,7 @@ class FileLibrary extends LibraryCore
 	 * @param boolean $replace Replace the file flag 
 	 * @return boolean True on success, otherwise false
 	 */
-	public function save(Request $request, $key, $replace=false)
+	public function save(Request $request, $key, $replace=true)
 	{
 		$file = $request->file($key);		
 		if($file)
@@ -155,7 +131,7 @@ class FileLibrary extends LibraryCore
 			$extension = $file->guessExtension();				
 			$filename = $this->generateFileName($extension,$mimeType);
 			$configPath = $this->getConfigPath();
-			$fullpath = $configPath.$filename;
+			$fullpath = $configPath.'/'.$filename;
 			if(false !== $this->saveFullPath($fullpath,file_get_contents($file->getRealPath())))
 			{
 				// Update models filename attirbute
@@ -221,9 +197,9 @@ class FileLibrary extends LibraryCore
 	public function getConfigPath(ModelCore $model = NULL)
 	{
 		$path = '';
-		if(isset($this->configKeys[$this->getConfigKeyFromModel($model)]));
+		if(in_array($this->getConfigKeyFromModel($model), $this->configKeys));
 		{
-			$path = config('storage_directory.'.$this->getConfigKeyFromModel($model));
+			$path = config('system.'.$this->getConfigKeyFromModel($model));
 		}
 		
 		return $path;
@@ -246,47 +222,9 @@ class FileLibrary extends LibraryCore
 		
 		switch($targetModel->getTable())
 		{
-			case 'users':
-				$key = 'user_photo';		
-				break;
-			case 'gift_card':
-				if($targetModel->type == GiftCardType::VIDEO_TYPE)
-				{
-					$key = 'gift_card_video';
-				}
-				else
-				{
-					$key = 'gift_card_photo';
-				}
-				break;
-			case 'user_messages':
-				if($targetModel->type == 1)
-				{
-					$key = 'message_audio';
-				}
-				elseif($targetModel->type == 2)
-				{
-					$key = 'message_video';
-				}
-				break;
-			case 'order_details':
-				$key = 'qrcodes';
-				break;
-			case 'product_images':
-				$key = 'product_photo';
-				break;
-			case 'printing_orders':
-				$key = 'printing_orders';
-				break;
-			case 'notifications':
-				$key = 'notifications';
-				break;
-			case 'gift_card_category':
-				$key = 'gift_card_category_images';
-				break;
-			/*case 'users':
-				$key = 'icons';
-				break;*/
+			case 'car_image':
+				$key = 'car_images';		
+				break;		
 		}
 		
 		return $key;
@@ -326,7 +264,7 @@ class FileLibrary extends LibraryCore
 		$filename = '';
 		if($model)
 		{
-			$filename = $model->{$column};
+			$filename = $model->getAttributes()[$column];
 			$this->column = $column;
 		}
 		elseif($this->subjectModel)
@@ -340,11 +278,7 @@ class FileLibrary extends LibraryCore
 		}
 		
 		$configPath = $this->getConfigPath($model);
-		if(false !== strpos($configPath, '/public'))
-		{
-			$url = str_replace('/public', '', $configPath).$filename;
-		}
-		
+		$url = request()->root() .'/images/'.$configPath.'/'.$filename;
 		return $url;
 	}
 	

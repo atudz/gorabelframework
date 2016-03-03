@@ -51,6 +51,15 @@ class DataTreeLibrary extends LibraryCore
 	 */
 	protected $prepared = false;
 	
+	/**
+	 * 
+	 * @var unknown
+	 */
+	protected $conditions = [
+			'where' => [],
+			'whereIn' => [],			
+	];
+	
 	
 	/**
 	 * The class contructor
@@ -92,7 +101,7 @@ class DataTreeLibrary extends LibraryCore
 	 * @param string $select
 	 * @return \App\Libraries\unknown
 	 */
-	public function getData($select='*')
+	public function getData($select=['*'])
 	{
 		// get parent root data		
 		$data = [];
@@ -114,9 +123,11 @@ class DataTreeLibrary extends LibraryCore
 	 * Get root elements 
 	 * @param string $select
 	 */
-	public function getRoot($select='*')
+	public function getRoot($select=['*'])
 	{
 		$prepare = $this->subjectModel->where($this->parentColumn,'=',0);
+		
+		$prepare = $this->addAdhocConditions($prepare);
 		if($this->sortColumn)
 		{
 			$prepare->orderBy($this->sortColumn, $this->sort);
@@ -132,9 +143,10 @@ class DataTreeLibrary extends LibraryCore
 	 * @param string $select
 	 * @return string
 	 */
-	public function getChildren($parentId, $data=[], $select='*')
+	public function getChildren($parentId, $data=[], $select=['*'])
 	{
 		$prepare = $this->subjectModel->where($this->parentColumn,'=',$parentId);
+		$prepare = $this->addAdhocConditions($prepare);
 		if($this->sortColumn)
 		{
 			$prepare->orderBy($this->sortColumn, $this->sort);
@@ -156,98 +168,62 @@ class DataTreeLibrary extends LibraryCore
 		
 		return $data;
 	}
-	
-	/**
-	 * Render the data tree. Displayed using accordion bootsrap,
-	 * @param unknown $data
-	 * @return string
-	 */
-	public function render($data=[])
-	{
-		$html = '';
-		
-		if(!$this->prepared)
-		{
-			$this->getData();
-		}
-		
-		$values = $data ? $data : $this->dateTree;
-		if(!$values)
-		{
-			return $html;
-		}
-		
-		$html = '<accordion close-others="oneAtATime">';
-		foreach($values as $value)
-		{
-			$html .= '<accordion-group>';
-			$noSub = empty($value['sub']);
-			$html .= $this->getAccordHeading($value['name_en_us'], $noSub, $value['id']);
-			if(!$noSub)
-			{
-				$html .= $this->render($value['sub']);
-			}
-			$html .= $this->getAccordionData($value['id']);
-			$html .= '</accordion-group>';
-		}
-		$html .= '</accordion>';
-		
-		return $html;
-	}
-	
-	/**
-	 * Get the accordion header
-	 * @param unknown $title
-	 * @param unknown $disabled
-	 * @param unknown $parentId
-	 * @return string
-	 */
-	protected function getAccordHeading($title, $disabled, $parentId)
-	{
-		$html ='<accordion-heading is-disabled='.$disabled.'>'.				
-				$title.
-				'<span class="pull-right">'.
-				'<a tooltip="View" href="/product/category/show/'.$parentId.'" class="edit-space glyphicon actions glyphicon-eye-open"></a>&nbsp;'.
-				\Html::tableAction('edit','/product/category/edit/'.$parentId,'delete','/controller/product/category/destroy/'.$parentId).
-				'</span>'.
-				'</accordion-heading>';
-		return $html;
-	}
-	
-	
-	/**
-	 * Get the accordion data
-	 * @param unknown $parentId
-	 * @return string
-	 */
-	protected function getAccordionData($parentId)
-	{
-		$categories = ModelFactory::getInstance('ProductCategory')
-							->with(['products'=>function($query) {
-								$query->select('product.id','product.name_en_us');
-			
-							}])->where('id','=',$parentId)
-							->get(['id']);
 
-		$html = '';
-		
-		foreach($categories as $category)
+	/**
+	 * Add adhoc conditions to the query
+	 * @param unknown $prepare
+	 */
+	protected function addAdhocConditions($prepare)
+	{
+		// Add where conditions
+		foreach($this->conditions['where'] as $where)
 		{
-			if($category->products->isEmpty())
-			{
-				$html .= 'No products.';
-			}
-			else 
-			{
-				$html .= '<h5>&nbsp;Products</h5><ul>';
-				foreach($category->products as $product)
-				{
-					$html .=  '<li>'.\Html::link('product/show/'.$product->id,$product->name_en_us).'</li>';
-				}
-				$html .= '</ul>';
-			}
-		}					
-		return $html;					
+			$prepare = $prepare->where($where['column'], $where['operator'], $where['value'], $where['boolean']);	
+		}
+		
+		// Add where In conditions
+		foreach($this->conditions['whereIn'] as $where)
+		{
+			$prepare = $prepare->whereIn($where['column'], $where['values'], $where['boolean'],$where['not']);
+		}
+		
+		return $prepare;	
+	}
+	
+	/**
+	 * Add where condition
+	 * @param unknown $column
+	 * @param unknown $operator
+	 * @param unknown $value
+	 * @param string $boolean
+	 */
+	public function addWhere($column, $operator = '=', $value = null, $boolean = 'and')
+	{
+		$condition = [
+			'operator'=> $operator,
+			'value' => $value,
+			'column' => $column,
+			'boolean'=>$boolean
+		];
+		$this->conditions['where'][] = $condition;
+	}
+	
+	/**
+	 * Add where in condition
+	 * @param unknown $column
+	 * @param unknown $values
+	 * @param string $boolean
+	 * @param string $not
+	 */
+	public function addwhereIn($column, array $values, $boolean = 'and', $not = false)
+	{
+		$condition = [
+				'not'=> $not,
+				'values' => $values,
+				'column' => $column,
+				'boolean'=> $boolean
+		];
+		$this->conditions['whereIn'][] = $condition;
 	}
 	
 }

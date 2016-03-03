@@ -1,0 +1,29 @@
+{
+  "name": "gorable",
+  "description": "gorabel packages",
+  "main": "",
+  "authors": [
+    "Abner Tudtud <abnertudtud@gmail.com>"
+  ],
+  "license": "MIT",
+  "moduleType": [],
+  "homepage": "",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "public/packages",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "~2.2.0",
+    "jquery-ui": "~1.11.4",
+    "bootstrap": "~3.3.6",
+    "font-awesome": "~4.5.0",
+    "ckeditor": "~4.5.6",
+    "jquery-slimscroll": "~1.3.7",
+    "dropzone": "~4.2.0"  
+  }
+}
