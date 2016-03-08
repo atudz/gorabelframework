@@ -50,4 +50,13 @@ class ControllerCore extends Controller
 		return app_path('Http/Controllers/');
 	}
 	
+	
+	/**
+	 * Get permission list
+	 */
+	public function getPermissions()
+	{
+		return $this->permissions;
+	}
+	
 }
