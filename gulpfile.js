@@ -40,15 +40,6 @@ elixir(function(mix) {
 	         './node_modules/font-awesome/css/font-awesome.css'
 	         ],
 	         'public/css/lib.css')
-	         
-	 /**
-     * @tasking styles
-     * Get styles from library convert to one file
-     **/   
-	.version([
-	          'public/css/lib.css', 
-	          'public/js/lib.js'
-	          ]);
 	
 	
 	/**
@@ -66,6 +57,16 @@ elixir(function(mix) {
       **/
 	 .scripts([
 	           'workspace.js'],
-	           'public/js/common.js');
+	           'public/js/common.js')
+	           
+	           
+  	 /**
+    * @tasking styles
+    * Get styles from library convert to one file
+    **/   
+   	.version([
+   	          'public/css/lib.css', 
+   	          'public/js/lib.js'
+   	          ]);
 
 });
