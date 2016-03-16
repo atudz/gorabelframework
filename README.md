@@ -1,7 +1,7 @@
 # gorabelframework
 Gorabel is a framework that was created on top of laravel. Customization were made to meet desired architecture.
 
-## gorabelframework with GULP elixir
+## Elixir/Gulp Ready
 Steps on how to install:
 
 1. npm install gulp --save-dev
