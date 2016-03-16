@@ -61,7 +61,7 @@ elixir(function(mix) {
 	           
 	           
   	 /**
-    * @tasking styles
+    * @tasking versioning
     * Get styles from library convert to one file
     **/   
    	.version([
