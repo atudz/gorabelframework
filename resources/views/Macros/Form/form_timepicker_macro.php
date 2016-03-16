@@ -30,7 +30,7 @@ Form::macro('timepicker', function($type, $name, $label, $value=null, $attribute
 
 	$html = '
 			<div class="form-group">
-				<label for="pickup_date">'.$label.'</label>
+				<label for="'.$name.'">'.$label.'</label>
 				<div class="input-group">
 					'.Form::input($type, $name, $value, $options);
 					if(!$removeIcon){
