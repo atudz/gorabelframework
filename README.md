@@ -4,7 +4,7 @@ Gorabel is a framework that was created on top of laravel. Customization were ma
 ## Elixir/Gulp Ready
 Steps on how to install:
 
-if gulp is not yet installed please do: sudo npm install gulp -g
+if gulp is not yet install in your iMAC please do: sudo npm install gulp -g
 
 1. npm install gulp --save-dev
 2. npm install laravel-elixir --save
