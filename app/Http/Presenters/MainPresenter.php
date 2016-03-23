@@ -33,7 +33,7 @@ class MainPresenter extends PresenterCore
         $userType = TypeFactory::getInstance('User');
         
         // Perform an access check
-        AccessCheckFactory::getInstance('User')->canAccess(1,'view');
+        AccessCheckFactory::getInstance('User')->canAccess(auth()->user()->id,'view');
         
         
         // Using facade
