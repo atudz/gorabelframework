@@ -1,3 +1,0 @@
-/**
- * Application's javascript codes
- */

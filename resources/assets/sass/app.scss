@@ -1,2 +1,14 @@
-// @import "node_modules/bootstrap-sass/assets/stylesheets/bootstrap";
+@import "resources/assets/sass/variables.scss";
+@import "resources/assets/sass/includes.scss";
 
+/**
+** SCSS result file compile
+** @Assign variable on variable.scss
+** @Sample data: width: $full-width;
+** @Assign includes function in includes.scss
+** @Sample data: @include custom-border();
+**/
+
+body{
+
+}
