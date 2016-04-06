@@ -147,6 +147,7 @@ return [
     	App\Providers\TypeServiceProvider::class,
     	App\Providers\WebServiceServiceProvider::class,
     	App\Providers\AccessCheckServiceProvider::class,
+    	App\Providers\CustomValidatorServiceProvider::class,
     		
     		
     	//Third Party
