@@ -74,6 +74,10 @@ return [
     'timezone'             => 'The :attribute must be a valid zone.',
     'unique'               => 'The :attribute has already been taken.',
     'url'                  => 'The :attribute format is invalid.',
+		
+	'strbytes' => 'The :attribute must be a file of type: :values.',
+	'strbytesize' => 'The :attribute must be less than :size bytes.',
+	'words' => 'The :attribute must be in :words words.',
 
     /*
     |--------------------------------------------------------------------------
